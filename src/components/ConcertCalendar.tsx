@@ -204,6 +204,9 @@ export function ConcertCalendar({ concerts, today, initialMonth }: Props) {
             <span className="h-1.5 w-1.5 rounded-full bg-primary" /> Upcoming
           </span>
           <span className="flex items-center gap-2">
+            <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/40" /> Archived
+          </span>
+          <span className="flex items-center gap-2">
             <span className="h-3 w-3 outline outline-1 outline-primary" /> Today
           </span>
         </p>
