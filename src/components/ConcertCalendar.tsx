@@ -120,14 +120,16 @@ export function ConcertCalendar({ concerts, today, initialMonth }: Props) {
     [concerts, today],
   );
 
+  // Group every concert (upcoming + archived) so past concerts also appear on
+  // the calendar grid, rendered as disabled/muted dots with a hover card.
   const byDay = useMemo(() => {
     const map = new Map<string, DatedConcert[]>();
-    for (const c of upcomingConcerts) {
+    for (const c of concerts) {
       const key = `${c.when.getFullYear()}-${c.when.getMonth()}-${c.when.getDate()}`;
       map.set(key, [...(map.get(key) ?? []), c]);
     }
     return map;
-  }, [upcomingConcerts]);
+  }, [concerts]);
 
   const monthStart = new Date(cursor.getFullYear(), cursor.getMonth(), 1);
   const daysInMonth = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 0).getDate();
