@@ -111,7 +111,11 @@ function SeasonPage() {
 
         <section className="pt-10" aria-label="Upcoming concerts">
           {view === "calendar" ? (
-            <ConcertCalendar concerts={upcoming} today={today} initialMonth={calendarStart} />
+            <ConcertCalendar
+              concerts={[...upcoming, ...past]}
+              today={today}
+              initialMonth={calendarStart}
+            />
           ) : upcoming.length === 0 ? (
             <p className="text-sm text-muted-foreground">
               No upcoming dates are currently announced. Please check back soon.
