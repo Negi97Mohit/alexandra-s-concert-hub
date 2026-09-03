@@ -1,29 +1,78 @@
-# Welcome to your Lovable project
+# Alexandra Dovgan — Showcase & Portfolio
 
-This project was built with [Lovable](https://lovable.dev).
+Official showcase website for classical pianist **Alexandra Dovgan**, presenting her biography, international concert calendar, photogallery, media appearances, press reviews, and management contact details.
 
-## Build with Lovable
+## ✨ Features
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+- **Biography & Profile**: Comprehensive biographical background available in four languages (English, Italian, German, French).
+- **Concert Schedule**: Upcoming concert listings, venues, and tour details.
+- **Photogallery**: High-resolution performance and press photography.
+- **Media & Broadcasts**: Curated video performances with orchestras and recitals.
+- **Selected Press & Reviews**: International critical reception and articles.
+- **Contact & Management**: Worldwide representation via AMC (Artists Management Company, Verona) and regional contacts.
+- **Refined Classical Aesthetics**: Editorial typography, fluid animations, and mobile-friendly responsive navigation.
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+## 🛠️ Tech Stack
 
-## Development
+- **Framework**: [TanStack Start](https://tanstack.com/router) with React 19
+- **Routing**: TanStack Router (file-based routing)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com) + `tw-animate-css`
+- **UI Components**: Radix UI primitives & Lucide Icons
+- **Language**: TypeScript
+- **Bundler**: Vite
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+## 🚀 Getting Started
 
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+### Prerequisites
+
+Ensure you have [Node.js](https://nodejs.org/) (v20+ recommended) installed.
+
+### Installation
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd alexandra-dovgan-s-showcase
+
+# Install dependencies
+npm install
+```
+
+### Development Server
+
+Start the local development server:
+
+```bash
 npm run dev
 ```
 
-## Built with
+Open [http://localhost:3000](http://localhost:3000) (or the port indicated in your terminal) in your browser.
 
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
+### Production Build
+
+Create an optimized production build:
+
+```bash
+npm run build
+```
+
+Preview the production build locally:
+
+```bash
+npm run preview
+```
+
+### Code Quality & Formatting
+
+```bash
+# Run ESLint checks
+npm run lint
+
+# Format codebase with Prettier
+npm run format
+```
+
+## 📄 License & Credits
+
+- Artist Information & Management: [AMC Artists Management Company, Verona](https://www.amcmusic.com/artists/alexandra-dovgan/)
+- Photography: Vladimir Volkov
