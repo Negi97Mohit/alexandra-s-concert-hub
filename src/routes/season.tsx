@@ -57,10 +57,13 @@ function ConcertRow({ concert, today }: { concert: DatedConcert; today: Date }) 
   );
 }
 
+const UPCOMING_PREVIEW_COUNT = 8;
+
 function SeasonPage() {
   const today = useToday();
   const { upcoming, past } = splitConcerts(CONCERTS, today);
   const [view, setView] = useState<"calendar" | "list">("calendar");
+  const [showAllUpcoming, setShowAllUpcoming] = useState(false);
   const [showAllPast, setShowAllPast] = useState(false);
 
   const calendarStart =
@@ -68,6 +71,9 @@ function SeasonPage() {
       ? new Date(upcoming[0].when.getFullYear(), upcoming[0].when.getMonth(), 1)
       : new Date(today.getFullYear(), today.getMonth(), 1);
 
+  const visibleUpcoming = showAllUpcoming
+    ? upcoming
+    : upcoming.slice(0, UPCOMING_PREVIEW_COUNT);
   const visiblePast = showAllPast ? past : past.slice(0, 8);
 
   return (
@@ -82,7 +88,7 @@ function SeasonPage() {
       <div className="mx-auto max-w-[1400px] px-6 md:px-12">
         <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-5">
           <p className="text-[0.6875rem] uppercase tracking-[0.24em] text-muted-foreground">
-            Today · {formatLongDate(today)} — {upcoming.length} upcoming, {past.length} archived
+            Today · {formatLongDate(today)}
           </p>
           <div className="flex gap-2">
             {(["calendar", "list"] as const).map((v) => (
@@ -107,7 +113,7 @@ function SeasonPage() {
         <section className="pt-10" aria-label="Upcoming concerts">
           {view === "calendar" ? (
             <ConcertCalendar
-              concerts={withDates(CONCERTS)}
+              concerts={upcoming}
               today={today}
               initialMonth={calendarStart}
             />
@@ -116,11 +122,22 @@ function SeasonPage() {
               No upcoming dates are currently announced. Please check back soon.
             </p>
           ) : (
-            <ul className="border-t border-border">
-              {upcoming.map((c, i) => (
-                <ConcertRow key={`${c.date}-${i}`} concert={c} today={today} />
-              ))}
-            </ul>
+            <>
+              <ul className="border-t border-border">
+                {visibleUpcoming.map((c, i) => (
+                  <ConcertRow key={`${c.date}-${i}`} concert={c} today={today} />
+                ))}
+              </ul>
+              {upcoming.length > visibleUpcoming.length || showAllUpcoming ? (
+                <button
+                  type="button"
+                  onClick={() => setShowAllUpcoming((v) => !v)}
+                  className="rule-link mt-8 inline-block"
+                >
+                  {showAllUpcoming ? "Show fewer" : `Load more`} →
+                </button>
+              ) : null}
+            </>
           )}
         </section>
 
@@ -142,7 +159,7 @@ function SeasonPage() {
                 {visiblePast.map((c, i) => (
                   <li
                     key={`${c.date}-${i}`}
-                    className="-mx-4 grid gap-2 border-b border-border px-4 py-6 text-muted-foreground md:grid-cols-[190px_1fr_260px] md:items-baseline"
+                    className="-mx-4 grid gap-2 border-b border-border px-4 py-6 text-muted-foreground transition-colors duration-200 hover:bg-secondary/60 md:grid-cols-[190px_1fr_260px] md:items-baseline"
                   >
                     <span className="text-[0.6875rem] uppercase tracking-[0.24em]">
                       {formatLongDate(c.when)}
