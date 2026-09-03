@@ -37,21 +37,26 @@ function CalendarDay({
       {hasEvent && (
         <div
           className={[
-            "pointer-events-none absolute top-full z-20 mt-2 w-[min(17.5rem,calc(100vw-2.5rem))] max-w-[17.5rem] rounded-sm border border-border bg-card p-4 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.25)] opacity-0 transition-all duration-200",
-            align === "left" ? "left-0" : "",
-            align === "right" ? "right-0" : "",
-            align === "center" ? "left-1/2 -translate-x-1/2" : "",
+            "pointer-events-none z-30 rounded-sm border border-border bg-card p-4 text-left shadow-[0_20px_50px_-15px_rgba(0,0,0,0.25)] opacity-0 transition-opacity duration-200",
+            // Mobile: pin to the viewport so the card can never overflow the screen.
+            "fixed inset-x-4 bottom-4 w-auto max-h-[60vh] overflow-y-auto",
+            // Tablet and up: anchor to the day cell, edge-aware.
+            "sm:absolute sm:inset-x-auto sm:bottom-auto sm:top-full sm:mt-2 sm:w-[min(17.5rem,calc(100vw-2.5rem))] sm:max-h-none sm:overflow-visible",
+            align === "left" ? "sm:left-0" : "",
+            align === "right" ? "sm:right-0" : "",
+            align === "center" ? "sm:left-1/2 sm:-translate-x-1/2" : "",
             "group-hover:pointer-events-auto group-hover:opacity-100",
           ].join(" ")}
         >
           <div
             className={[
-              "absolute -top-1 h-2 w-2 rotate-45 border-l border-t border-border bg-card",
+              "absolute -top-1 hidden h-2 w-2 rotate-45 border-l border-t border-border bg-card sm:block",
               align === "left" ? "left-3" : "",
               align === "right" ? "right-3" : "",
               align === "center" ? "left-1/2 -translate-x-1/2" : "",
             ].join(" ")}
           />
+
           <ul className="space-y-4">
             {events.map((c, i) => (
               <li key={`${c.date}-${i}`} className={i > 0 ? "border-t border-border pt-4" : ""}>
