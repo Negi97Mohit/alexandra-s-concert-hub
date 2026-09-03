@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { PageHeading, SiteFooter, SiteHeader } from "@/components/SiteChrome";
 import { ConcertCalendar } from "@/components/ConcertCalendar";
+import { ConcertLinks } from "@/components/ConcertLinks";
 import { ARTIST, CONCERTS } from "@/data/dovgan";
 import {
   daysUntil,
@@ -44,7 +45,10 @@ function ConcertRow({ concert, today }: { concert: DatedConcert; today: Date }) 
         {formatLongDate(concert.when)}
         {concert.time ? ` · ${concert.time}` : ""}
       </span>
-      <span className="font-display text-2xl text-foreground md:text-3xl">{concert.venue}</span>
+      <span>
+        <span className="font-display text-2xl text-foreground md:text-3xl">{concert.venue}</span>
+        <ConcertLinks concert={concert} today={today} />
+      </span>
       <span className="text-[0.6875rem] uppercase tracking-[0.24em] text-muted-foreground md:text-right">
         {concert.town}, {concert.country}
         {badge ? <span className="ml-3 text-primary">{badge}</span> : null}
@@ -143,8 +147,11 @@ function SeasonPage() {
                     <span className="text-[0.6875rem] uppercase tracking-[0.24em]">
                       {formatLongDate(c.when)}
                     </span>
-                    <span className="font-display text-xl text-foreground/80 md:text-2xl">
-                      {c.venue}
+                    <span>
+                      <span className="font-display text-xl text-foreground/80 md:text-2xl">
+                        {c.venue}
+                      </span>
+                      <ConcertLinks concert={c} today={today} />
                     </span>
                     <span className="text-[0.6875rem] uppercase tracking-[0.24em] md:text-right">
                       {c.town}, {c.country}
