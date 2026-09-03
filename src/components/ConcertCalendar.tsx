@@ -17,6 +17,7 @@ function CalendarDay({
 }) {
   const isToday = date.getTime() === today.getTime();
   const hasEvent = events.length > 0;
+  const isPastDay = hasEvent && events.every((c) => c.when.getTime() < today.getTime());
   const cellRef = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState<{ left: number; top: number; arrow: number } | null>(null);
 
@@ -39,13 +40,22 @@ function CalendarDay({
       onMouseLeave={hasEvent ? () => setPos(null) : undefined}
       className={[
         "group relative flex aspect-square flex-col items-center justify-center border border-border/60 text-xs transition-colors duration-200 sm:text-sm",
-        hasEvent ? "cursor-pointer bg-primary/10 font-medium text-primary hover:bg-primary/20" : "",
+        hasEvent && !isPastDay
+          ? "cursor-pointer bg-primary/10 font-medium text-primary hover:bg-primary/20"
+          : "",
+        hasEvent && isPastDay
+          ? "cursor-pointer bg-muted/30 text-muted-foreground/60 hover:bg-muted/50 hover:text-muted-foreground"
+          : "",
         !hasEvent ? "text-muted-foreground/70 hover:bg-secondary/40 hover:text-foreground" : "",
         isToday ? "outline outline-1 outline-primary" : "",
       ].join(" ")}
     >
       <span>{day}</span>
-      {hasEvent && <span className="mt-1 h-1.5 w-1.5 rounded-full bg-primary" />}
+      {hasEvent && (
+        <span
+          className={["mt-1 h-1.5 w-1.5 rounded-full", isPastDay ? "bg-muted-foreground/40" : "bg-primary"].join(" ")}
+        />
+      )}
 
       {hasEvent && pos && (
         <div
@@ -62,19 +72,28 @@ function CalendarDay({
           />
 
           <ul className="space-y-4">
-            {events.map((c, i) => (
-              <li key={`${c.date}-${i}`} className={i > 0 ? "border-t border-border pt-4" : ""}>
-                <p className="text-[0.6875rem] uppercase tracking-[0.24em] text-primary">
-                  {formatLongDate(c.when)}
-                  {c.time ? ` · ${c.time}` : ""}
-                </p>
-                <p className="mt-1 font-display text-lg text-foreground">{c.venue}</p>
-                <p className="text-[0.625rem] uppercase tracking-[0.2em] text-muted-foreground">
-                  {c.town}, {c.country}
-                </p>
-                <ConcertLinks concert={c} today={today} />
-              </li>
-            ))}
+            {events.map((c, i) => {
+              const isPast = c.when.getTime() < today.getTime();
+              return (
+                <li key={`${c.date}-${i}`} className={i > 0 ? "border-t border-border pt-4" : ""}>
+                  <p
+                    className={[
+                      "text-[0.6875rem] uppercase tracking-[0.24em]",
+                      isPast ? "text-muted-foreground" : "text-primary",
+                    ].join(" ")}
+                  >
+                    {formatLongDate(c.when)}
+                    {c.time ? ` · ${c.time}` : ""}
+                    {isPast ? " · Archived" : ""}
+                  </p>
+                  <p className="mt-1 font-display text-lg text-foreground">{c.venue}</p>
+                  <p className="text-[0.625rem] uppercase tracking-[0.2em] text-muted-foreground">
+                    {c.town}, {c.country}
+                  </p>
+                  <ConcertLinks concert={c} today={today} />
+                </li>
+              );
+            })}
           </ul>
         </div>
       )}
