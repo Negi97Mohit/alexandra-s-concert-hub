@@ -172,6 +172,7 @@ export function ConcertCalendar({ concerts, today, initialMonth }: Props) {
                 date={date}
                 events={events}
                 today={today}
+
                 col={i % 7}
               />
             );
