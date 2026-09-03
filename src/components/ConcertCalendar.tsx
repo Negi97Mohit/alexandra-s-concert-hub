@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { ConcertLinks } from "@/components/ConcertLinks";
 import { formatLongDate, monthKey, monthLabel, type DatedConcert } from "@/lib/concerts";
 
@@ -9,21 +9,34 @@ function CalendarDay({
   date,
   events,
   today,
-  col,
 }: {
   day: number;
   date: Date;
   events: DatedConcert[];
   today: Date;
-  /** 0-6 column index in the Monday-first grid, used to keep popups on screen. */
-  col: number;
 }) {
   const isToday = date.getTime() === today.getTime();
   const hasEvent = events.length > 0;
-  const align = col <= 1 ? "left" : col >= 5 ? "right" : "center";
+  const cellRef = useRef<HTMLDivElement>(null);
+  const [pos, setPos] = useState<{ left: number; top: number; arrow: number } | null>(null);
+
+  const place = useCallback(() => {
+    const el = cellRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const margin = 12;
+    const width = Math.min(280, window.innerWidth - margin * 2);
+    const anchorX = r.left + r.width / 2;
+    let left = anchorX - width / 2;
+    left = Math.max(margin, Math.min(left, window.innerWidth - width - margin));
+    return setPos({ left, top: r.bottom + 8, arrow: anchorX - left });
+  }, []);
 
   return (
     <div
+      ref={cellRef}
+      onMouseEnter={hasEvent ? place : undefined}
+      onMouseLeave={hasEvent ? () => setPos(null) : undefined}
       className={[
         "group relative flex aspect-square flex-col items-center justify-center border border-border/60 text-xs transition-colors duration-200 sm:text-sm",
         hasEvent ? "cursor-pointer bg-primary/10 font-medium text-primary hover:bg-primary/20" : "",
@@ -34,27 +47,18 @@ function CalendarDay({
       <span>{day}</span>
       {hasEvent && <span className="mt-1 h-1.5 w-1.5 rounded-full bg-primary" />}
 
-      {hasEvent && (
+      {hasEvent && pos && (
         <div
-          className={[
-            "pointer-events-none z-30 rounded-sm border border-border bg-card p-4 text-left shadow-[0_20px_50px_-15px_rgba(0,0,0,0.25)] opacity-0 transition-opacity duration-200",
-            // Mobile: pin to the viewport so the card can never overflow the screen.
-            "fixed inset-x-4 bottom-4 w-auto max-h-[60vh] overflow-y-auto",
-            // Tablet and up: anchor to the day cell, edge-aware.
-            "sm:absolute sm:inset-x-auto sm:bottom-auto sm:top-full sm:mt-2 sm:w-[min(17.5rem,calc(100vw-2.5rem))] sm:max-h-none sm:overflow-visible",
-            align === "left" ? "sm:left-0" : "",
-            align === "right" ? "sm:right-0" : "",
-            align === "center" ? "sm:left-1/2 sm:-translate-x-1/2" : "",
-            "group-hover:pointer-events-auto group-hover:opacity-100",
-          ].join(" ")}
+          className="pointer-events-auto fixed z-50 max-h-[60vh] overflow-y-auto rounded-sm border border-border bg-card p-4 text-left shadow-[0_20px_50px_-15px_rgba(0,0,0,0.25)] animate-fade-in"
+          style={{
+            left: pos.left,
+            top: pos.top,
+            width: `min(17.5rem, calc(100vw - 1.5rem))`,
+          }}
         >
           <div
-            className={[
-              "absolute -top-1 hidden h-2 w-2 rotate-45 border-l border-t border-border bg-card sm:block",
-              align === "left" ? "left-3" : "",
-              align === "right" ? "right-3" : "",
-              align === "center" ? "left-1/2 -translate-x-1/2" : "",
-            ].join(" ")}
+            className="absolute -top-1 h-2 w-2 rotate-45 border-l border-t border-border bg-card"
+            style={{ left: pos.arrow - 4 }}
           />
 
           <ul className="space-y-4">
@@ -77,6 +81,7 @@ function CalendarDay({
     </div>
   );
 }
+
 
 
 type Props = {
