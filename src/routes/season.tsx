@@ -71,9 +71,7 @@ function SeasonPage() {
       ? new Date(upcoming[0].when.getFullYear(), upcoming[0].when.getMonth(), 1)
       : new Date(today.getFullYear(), today.getMonth(), 1);
 
-  const visibleUpcoming = showAllUpcoming
-    ? upcoming
-    : upcoming.slice(0, UPCOMING_PREVIEW_COUNT);
+  const visibleUpcoming = showAllUpcoming ? upcoming : upcoming.slice(0, UPCOMING_PREVIEW_COUNT);
   const visiblePast = showAllPast ? past : past.slice(0, 8);
 
   return (
@@ -112,11 +110,7 @@ function SeasonPage() {
 
         <section className="pt-10" aria-label="Upcoming concerts">
           {view === "calendar" ? (
-            <ConcertCalendar
-              concerts={upcoming}
-              today={today}
-              initialMonth={calendarStart}
-            />
+            <ConcertCalendar concerts={upcoming} today={today} initialMonth={calendarStart} />
           ) : upcoming.length === 0 ? (
             <p className="text-sm text-muted-foreground">
               No upcoming dates are currently announced. Please check back soon.

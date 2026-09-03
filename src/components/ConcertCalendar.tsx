@@ -28,9 +28,7 @@ function CalendarDay({
       ].join(" ")}
     >
       <span>{day}</span>
-      {hasEvent && (
-        <span className="mt-1 h-1.5 w-1.5 rounded-full bg-primary" />
-      )}
+      {hasEvent && <span className="mt-1 h-1.5 w-1.5 rounded-full bg-primary" />}
 
       {hasEvent && (
         <div
@@ -101,8 +99,7 @@ export function ConcertCalendar({ concerts, today, initialMonth }: Props) {
     .filter((c) => monthKey(c.when) === monthKey(monthStart))
     .sort((a, b) => a.when.getTime() - b.when.getTime());
 
-  const shift = (n: number) =>
-    setCursor(new Date(cursor.getFullYear(), cursor.getMonth() + n, 1));
+  const shift = (n: number) => setCursor(new Date(cursor.getFullYear(), cursor.getMonth() + n, 1));
 
   return (
     <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)]">
@@ -143,15 +140,7 @@ export function ConcertCalendar({ concerts, today, initialMonth }: Props) {
             const date = new Date(cursor.getFullYear(), cursor.getMonth(), day);
             const events = byDay.get(`${date.getFullYear()}-${date.getMonth()}-${day}`) ?? [];
 
-            return (
-              <CalendarDay
-                key={day}
-                day={day}
-                date={date}
-                events={events}
-                today={today}
-              />
-            );
+            return <CalendarDay key={day} day={day} date={date} events={events} today={today} />;
           })}
         </div>
 
@@ -168,7 +157,9 @@ export function ConcertCalendar({ concerts, today, initialMonth }: Props) {
       <div>
         <p className="eyebrow">{monthLabel(monthStart)}</p>
         {monthConcerts.length === 0 ? (
-          <p className="mt-6 text-sm text-muted-foreground">No upcoming concerts listed this month.</p>
+          <p className="mt-6 text-sm text-muted-foreground">
+            No upcoming concerts listed this month.
+          </p>
         ) : (
           <ul className="mt-6 border-t border-border">
             {monthConcerts.map((c, i) => (
