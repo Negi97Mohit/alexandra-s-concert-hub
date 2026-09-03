@@ -112,7 +112,7 @@ function BioPage() {
               </div>
             ) : (
               <div className="mt-10 max-w-[62ch] space-y-7">
-                <p className="text-[0.95rem] leading-[1.9] text-muted-foreground">
+                <p className="font-display text-2xl leading-snug text-foreground md:text-[1.75rem]">
                   {active!.excerpt}
                 </p>
                 <a
