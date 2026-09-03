@@ -117,25 +117,25 @@ export function ConcertCalendar({ concerts, today, initialMonth }: Props) {
   const shift = (n: number) => setCursor(new Date(cursor.getFullYear(), cursor.getMonth() + n, 1));
 
   return (
-    <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)]">
-      <div>
-        <div className="flex items-center justify-between border-b border-border pb-4">
+    <div className="grid w-full min-w-0 gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)]">
+      <div className="min-w-0">
+        <div className="flex items-center justify-between gap-3 border-b border-border pb-4">
           <button
             type="button"
             onClick={() => shift(-1)}
             aria-label="Previous month"
-            className="text-[0.6875rem] uppercase tracking-[0.24em] text-muted-foreground transition-colors hover:text-primary"
+            className="shrink-0 cursor-pointer text-[0.6875rem] uppercase tracking-[0.24em] text-muted-foreground transition-colors hover:text-primary"
           >
             ← Prev
           </button>
-          <h3 className="font-display text-2xl text-foreground md:text-3xl">
+          <h3 className="min-w-0 truncate text-center font-display text-xl text-foreground sm:text-2xl md:text-3xl">
             {monthLabel(monthStart)}
           </h3>
           <button
             type="button"
             onClick={() => shift(1)}
             aria-label="Next month"
-            className="text-[0.6875rem] uppercase tracking-[0.24em] text-muted-foreground transition-colors hover:text-primary"
+            className="shrink-0 cursor-pointer text-[0.6875rem] uppercase tracking-[0.24em] text-muted-foreground transition-colors hover:text-primary"
           >
             Next →
           </button>
@@ -155,9 +155,19 @@ export function ConcertCalendar({ concerts, today, initialMonth }: Props) {
             const date = new Date(cursor.getFullYear(), cursor.getMonth(), day);
             const events = byDay.get(`${date.getFullYear()}-${date.getMonth()}-${day}`) ?? [];
 
-            return <CalendarDay key={day} day={day} date={date} events={events} today={today} />;
+            return (
+              <CalendarDay
+                key={day}
+                day={day}
+                date={date}
+                events={events}
+                today={today}
+                col={i % 7}
+              />
+            );
           })}
         </div>
+
 
         <p className="mt-4 flex flex-wrap items-center gap-5 text-[0.625rem] uppercase tracking-[0.2em] text-muted-foreground">
           <span className="flex items-center gap-2">
