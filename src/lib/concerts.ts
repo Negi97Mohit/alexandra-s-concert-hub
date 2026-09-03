@@ -3,6 +3,29 @@ import type { Concert } from "@/data/dovgan";
 
 export type DatedConcert = Concert & { when: Date };
 
+/**
+ * Returns the "more information" link for a concert. Falls back to a dummy
+ * placeholder URL when no explicit `infoUrl` is set on the concert entry.
+ */
+export function concertInfoUrl(concert: Concert): string {
+  return (
+    concert.infoUrl ??
+    "https://www.amcmusic.com/artists/alexandra-dovgan/"
+  );
+}
+
+/**
+ * Returns the ticketing link for a concert. Falls back to a dummy
+ * placeholder URL (clearly marked as a placeholder) when no explicit
+ * `ticketsUrl` is set on the concert entry.
+ */
+export function concertTicketsUrl(concert: Concert): string {
+  return (
+    concert.ticketsUrl ??
+    `https://tickets.example.com/?event=${encodeURIComponent(`${concert.venue} — ${concert.date}`)}`
+  );
+}
+
 /** Parses the "DD/MM/YYYY" format used in the concert data. */
 export function parseConcertDate(date: string): Date {
   const [d, m, y] = date.split("/").map((n) => Number(n));
