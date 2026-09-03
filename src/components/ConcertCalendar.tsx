@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { ConcertLinks } from "@/components/ConcertLinks";
 import { monthKey, monthLabel, type DatedConcert } from "@/lib/concerts";
 
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -143,6 +144,7 @@ export function ConcertCalendar({ concerts, today, initialMonth }: Props) {
                 <p className="mt-1 text-[0.6875rem] uppercase tracking-[0.24em] text-muted-foreground">
                   {c.town}, {c.country}
                 </p>
+                <ConcertLinks concert={c} today={today} />
               </li>
             ))}
           </ul>
