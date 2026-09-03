@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
+import { formatLongDate, splitConcerts, useToday } from "@/lib/concerts";
 import { ARTIST, BIO_INTRO, CONCERTS, MEDIA, NEWS, PHOTOS, QUOTES, REVIEWS } from "@/data/dovgan";
 
 export const Route = createFileRoute("/")({
@@ -25,6 +26,9 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
+  const today = useToday();
+  const { upcoming } = splitConcerts(CONCERTS, today);
+
   return (
     <div className="min-h-screen">
       <SiteHeader compact />
@@ -86,13 +90,13 @@ function Home() {
         <h2 className="font-display text-4xl text-foreground md:text-5xl">Concerts</h2>
         <p className="mt-3 text-sm text-muted-foreground">{ARTIST.season}</p>
         <ul className="mt-10 border-t border-border">
-          {CONCERTS.slice(0, 5).map((c, i) => (
+          {upcoming.slice(0, 5).map((c, i) => (
             <li
               key={`${c.date}-${i}`}
               className="grid gap-2 border-b border-border py-6 md:grid-cols-[140px_1fr_240px] md:items-baseline"
             >
               <span className="text-[0.6875rem] uppercase tracking-[0.24em] text-primary">
-                {c.date}
+                {formatLongDate(c.when)}
               </span>
               <span className="font-display text-2xl text-foreground">{c.venue}</span>
               <span className="text-[0.6875rem] uppercase tracking-[0.24em] text-muted-foreground md:text-right">
@@ -102,7 +106,7 @@ function Home() {
           ))}
         </ul>
         <Link to="/season" className="rule-link mt-10 inline-block">
-          View the full season →
+          View the calendar & archive →
         </Link>
       </section>
 
