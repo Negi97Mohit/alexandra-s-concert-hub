@@ -173,8 +173,6 @@ export function ConcertCalendar({ concerts, today, initialMonth }: Props) {
                 events={events}
                 today={today}
               />
-
-              />
             );
           })}
         </div>
