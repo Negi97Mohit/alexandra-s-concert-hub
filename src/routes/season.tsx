@@ -83,12 +83,12 @@ function SeasonPage() {
         lead="Upcoming performances shown against today's date. Past concerts move automatically into the archive below."
       />
 
-      <div className="mx-auto max-w-[1400px] px-6 md:px-12">
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-5">
-          <p className="text-[0.6875rem] uppercase tracking-[0.24em] text-muted-foreground">
+      <div className="mx-auto w-full max-w-[1400px] overflow-x-hidden px-4 sm:px-6 md:px-12">
+        <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-border pb-5 sm:flex sm:flex-wrap sm:justify-between sm:gap-4">
+          <p className="min-w-0 text-[0.625rem] uppercase tracking-[0.2em] text-muted-foreground sm:text-[0.6875rem] sm:tracking-[0.24em]">
             Today · {formatLongDate(today)}
           </p>
-          <div className="flex gap-2">
+          <div className="flex shrink-0 gap-2">
             {(["calendar", "list"] as const).map((v) => (
               <button
                 key={v}
@@ -96,7 +96,7 @@ function SeasonPage() {
                 onClick={() => setView(v)}
                 aria-pressed={view === v}
                 className={[
-                  "border px-4 py-2 text-[0.6875rem] uppercase tracking-[0.24em] transition-colors",
+                  "cursor-pointer border px-3 py-2 text-[0.625rem] uppercase tracking-[0.2em] transition-colors sm:px-4 sm:text-[0.6875rem] sm:tracking-[0.24em]",
                   view === v
                     ? "border-primary text-primary"
                     : "border-border text-muted-foreground hover:text-foreground",
@@ -107,6 +107,7 @@ function SeasonPage() {
             ))}
           </div>
         </div>
+
 
         <section className="pt-10" aria-label="Upcoming concerts">
           {view === "calendar" ? (

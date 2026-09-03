@@ -9,20 +9,24 @@ function CalendarDay({
   date,
   events,
   today,
+  col,
 }: {
   day: number;
   date: Date;
   events: DatedConcert[];
   today: Date;
+  /** 0-6 column index in the Monday-first grid, used to keep popups on screen. */
+  col: number;
 }) {
   const isToday = date.getTime() === today.getTime();
   const hasEvent = events.length > 0;
+  const align = col <= 1 ? "left" : col >= 5 ? "right" : "center";
 
   return (
     <div
       className={[
-        "group relative flex aspect-square flex-col items-center justify-center border border-border/60 text-sm transition-colors duration-200",
-        hasEvent ? "bg-primary/10 font-medium text-primary hover:bg-primary/20" : "",
+        "group relative flex aspect-square flex-col items-center justify-center border border-border/60 text-xs transition-colors duration-200 sm:text-sm",
+        hasEvent ? "cursor-pointer bg-primary/10 font-medium text-primary hover:bg-primary/20" : "",
         !hasEvent ? "text-muted-foreground/70 hover:bg-secondary/40 hover:text-foreground" : "",
         isToday ? "outline outline-1 outline-primary" : "",
       ].join(" ")}
@@ -33,11 +37,21 @@ function CalendarDay({
       {hasEvent && (
         <div
           className={[
-            "pointer-events-none absolute left-1/2 top-full z-20 mt-2 w-[280px] -translate-x-1/2 rounded-sm border border-border bg-card p-4 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.25)] opacity-0 transition-all duration-200",
-            "group-hover:pointer-events-auto group-hover:opacity-100 group-hover:translate-y-0",
+            "pointer-events-none absolute top-full z-20 mt-2 w-[min(17.5rem,calc(100vw-2.5rem))] max-w-[17.5rem] rounded-sm border border-border bg-card p-4 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.25)] opacity-0 transition-all duration-200",
+            align === "left" ? "left-0" : "",
+            align === "right" ? "right-0" : "",
+            align === "center" ? "left-1/2 -translate-x-1/2" : "",
+            "group-hover:pointer-events-auto group-hover:opacity-100",
           ].join(" ")}
         >
-          <div className="absolute -top-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 border-l border-t border-border bg-card" />
+          <div
+            className={[
+              "absolute -top-1 h-2 w-2 rotate-45 border-l border-t border-border bg-card",
+              align === "left" ? "left-3" : "",
+              align === "right" ? "right-3" : "",
+              align === "center" ? "left-1/2 -translate-x-1/2" : "",
+            ].join(" ")}
+          />
           <ul className="space-y-4">
             {events.map((c, i) => (
               <li key={`${c.date}-${i}`} className={i > 0 ? "border-t border-border pt-4" : ""}>
@@ -58,6 +72,7 @@ function CalendarDay({
     </div>
   );
 }
+
 
 type Props = {
   concerts: DatedConcert[];
@@ -102,25 +117,25 @@ export function ConcertCalendar({ concerts, today, initialMonth }: Props) {
   const shift = (n: number) => setCursor(new Date(cursor.getFullYear(), cursor.getMonth() + n, 1));
 
   return (
-    <div className="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)]">
-      <div>
-        <div className="flex items-center justify-between border-b border-border pb-4">
+    <div className="grid w-full min-w-0 gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)]">
+      <div className="min-w-0">
+        <div className="flex items-center justify-between gap-3 border-b border-border pb-4">
           <button
             type="button"
             onClick={() => shift(-1)}
             aria-label="Previous month"
-            className="text-[0.6875rem] uppercase tracking-[0.24em] text-muted-foreground transition-colors hover:text-primary"
+            className="shrink-0 cursor-pointer text-[0.6875rem] uppercase tracking-[0.24em] text-muted-foreground transition-colors hover:text-primary"
           >
             ← Prev
           </button>
-          <h3 className="font-display text-2xl text-foreground md:text-3xl">
+          <h3 className="min-w-0 truncate text-center font-display text-xl text-foreground sm:text-2xl md:text-3xl">
             {monthLabel(monthStart)}
           </h3>
           <button
             type="button"
             onClick={() => shift(1)}
             aria-label="Next month"
-            className="text-[0.6875rem] uppercase tracking-[0.24em] text-muted-foreground transition-colors hover:text-primary"
+            className="shrink-0 cursor-pointer text-[0.6875rem] uppercase tracking-[0.24em] text-muted-foreground transition-colors hover:text-primary"
           >
             Next →
           </button>
@@ -140,9 +155,19 @@ export function ConcertCalendar({ concerts, today, initialMonth }: Props) {
             const date = new Date(cursor.getFullYear(), cursor.getMonth(), day);
             const events = byDay.get(`${date.getFullYear()}-${date.getMonth()}-${day}`) ?? [];
 
-            return <CalendarDay key={day} day={day} date={date} events={events} today={today} />;
+            return (
+              <CalendarDay
+                key={day}
+                day={day}
+                date={date}
+                events={events}
+                today={today}
+                col={i % 7}
+              />
+            );
           })}
         </div>
+
 
         <p className="mt-4 flex flex-wrap items-center gap-5 text-[0.625rem] uppercase tracking-[0.2em] text-muted-foreground">
           <span className="flex items-center gap-2">
