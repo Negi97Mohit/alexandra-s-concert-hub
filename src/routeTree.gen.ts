@@ -10,33 +10,102 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BioRouteImport } from './routes/bio'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as GalleryRouteImport } from './routes/gallery'
+import { Route as MediaRouteImport } from './routes/media'
+import { Route as PressRouteImport } from './routes/press'
+import { Route as SeasonRouteImport } from './routes/season'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BioRoute = BioRouteImport.update({
+  id: '/bio',
+  path: '/bio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GalleryRoute = GalleryRouteImport.update({
+  id: '/gallery',
+  path: '/gallery',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MediaRoute = MediaRouteImport.update({
+  id: '/media',
+  path: '/media',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PressRoute = PressRouteImport.update({
+  id: '/press',
+  path: '/press',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SeasonRoute = SeasonRouteImport.update({
+  id: '/season',
+  path: '/season',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/bio': typeof BioRoute
+  '/contact': typeof ContactRoute
+  '/gallery': typeof GalleryRoute
+  '/media': typeof MediaRoute
+  '/press': typeof PressRoute
+  '/season': typeof SeasonRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/bio': typeof BioRoute
+  '/contact': typeof ContactRoute
+  '/gallery': typeof GalleryRoute
+  '/media': typeof MediaRoute
+  '/press': typeof PressRoute
+  '/season': typeof SeasonRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/bio': typeof BioRoute
+  '/contact': typeof ContactRoute
+  '/gallery': typeof GalleryRoute
+  '/media': typeof MediaRoute
+  '/press': typeof PressRoute
+  '/season': typeof SeasonRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    '/' | '/bio' | '/contact' | '/gallery' | '/media' | '/press' | '/season'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/bio' | '/contact' | '/gallery' | '/media' | '/press' | '/season'
+  id:
+    | '__root__'
+    | '/'
+    | '/bio'
+    | '/contact'
+    | '/gallery'
+    | '/media'
+    | '/press'
+    | '/season'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BioRoute: typeof BioRoute
+  ContactRoute: typeof ContactRoute
+  GalleryRoute: typeof GalleryRoute
+  MediaRoute: typeof MediaRoute
+  PressRoute: typeof PressRoute
+  SeasonRoute: typeof SeasonRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +117,59 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/bio': {
+      id: '/bio'
+      path: '/bio'
+      fullPath: '/bio'
+      preLoaderRoute: typeof BioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gallery': {
+      id: '/gallery'
+      path: '/gallery'
+      fullPath: '/gallery'
+      preLoaderRoute: typeof GalleryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/media': {
+      id: '/media'
+      path: '/media'
+      fullPath: '/media'
+      preLoaderRoute: typeof MediaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/press': {
+      id: '/press'
+      path: '/press'
+      fullPath: '/press'
+      preLoaderRoute: typeof PressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/season': {
+      id: '/season'
+      path: '/season'
+      fullPath: '/season'
+      preLoaderRoute: typeof SeasonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BioRoute: BioRoute,
+  ContactRoute: ContactRoute,
+  GalleryRoute: GalleryRoute,
+  MediaRoute: MediaRoute,
+  PressRoute: PressRoute,
+  SeasonRoute: SeasonRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

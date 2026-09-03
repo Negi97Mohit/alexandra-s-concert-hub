@@ -1,10 +1,12 @@
-<!-- LOVABLE:BEGIN -->
-> [!IMPORTANT]
-> This project is connected to [Lovable](https://lovable.dev). Avoid rewriting
-> published git history — force pushing, or rebasing/amending/squashing commits
-> that are already pushed — as it rewrites history on Lovable's side and the
-> user will likely lose their project history.
->
-> Commits you push to the connected branch sync back to Lovable and show up in
-> the editor, so keep the branch in a working state.
-<!-- LOVABLE:END -->
+# Development Guidelines
+
+## Project Overview
+
+This repository contains the official showcase website for classical pianist Alexandra Dovgan.
+
+## Code Standards
+
+- Built with TanStack Start, React 19, TypeScript, and Tailwind CSS v4.
+- Follow file-based routing in `src/routes/`.
+- Maintain clean typography, responsive layouts, and accessibility standards.
+- Run `npm run lint` and `npm run build` to verify changes before pushing.
