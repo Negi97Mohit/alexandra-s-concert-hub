@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteFooter, SiteHeader } from "@/components/SiteChrome";
+import { ConcertLinks } from "@/components/ConcertLinks";
 import { formatLongDate, splitConcerts, useToday } from "@/lib/concerts";
 import { ARTIST, BIO_INTRO, CONCERTS, MEDIA, NEWS, PHOTOS, QUOTES, REVIEWS } from "@/data/dovgan";
 
@@ -98,7 +99,10 @@ function Home() {
               <span className="text-[0.6875rem] uppercase tracking-[0.24em] text-primary">
                 {formatLongDate(c.when)}
               </span>
-              <span className="font-display text-2xl text-foreground">{c.venue}</span>
+              <span>
+                <span className="font-display text-2xl text-foreground">{c.venue}</span>
+                <ConcertLinks concert={c} today={today} />
+              </span>
               <span className="text-[0.6875rem] uppercase tracking-[0.24em] text-muted-foreground md:text-right">
                 {c.town}, {c.country}
               </span>
