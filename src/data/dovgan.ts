@@ -85,6 +85,10 @@ export type Concert = {
   town: string;
   country: string;
   venue: string;
+  /** Optional link to a page with further information about this concert. */
+  infoUrl?: string;
+  /** Optional link to the ticketing / booking page for this concert. */
+  ticketsUrl?: string;
 };
 
 export const CONCERTS: Concert[] = [
