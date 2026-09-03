@@ -11,21 +11,9 @@ export default defineConfig({
     tsConfigPaths({ projects: ["./tsconfig.json"] }),
     tanstackStart({
       server: { entry: "server" },
-      prerender: {
-        routes: [
-          "/",
-          "/bio",
-          "/season",
-          "/gallery",
-          "/media",
-          "/press",
-          "/contact",
-        ],
-      },
+      prerender: { enabled: true },
     }),
-    nitro({
-      preset: process.env.NITRO_PRESET || "netlify",
-    }),
+    nitro(process.env["NITRO_PRESET"] ? { preset: process.env["NITRO_PRESET"] } : {}),
     viteReact(),
   ],
   resolve: {
