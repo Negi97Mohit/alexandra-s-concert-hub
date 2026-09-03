@@ -8,10 +8,7 @@ export type DatedConcert = Concert & { when: Date };
  * placeholder URL when no explicit `infoUrl` is set on the concert entry.
  */
 export function concertInfoUrl(concert: Concert): string {
-  return (
-    concert.infoUrl ??
-    "https://www.amcmusic.com/artists/alexandra-dovgan/"
-  );
+  return concert.infoUrl ?? "https://www.amcmusic.com/artists/alexandra-dovgan/";
 }
 
 /**
